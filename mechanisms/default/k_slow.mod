@@ -62,8 +62,9 @@ UNITS {
 }
 
 PARAMETER {
+    :gmax = 0  (S/cm2)
     
-    gmax = 0  (S/cm2)                       : Will be changed when ion channel mechanism placed on cell!
+    gmax = 0.0019999999  (S/cm2)                       : Will be changed when ion channel mechanism placed on cell! :: Was: gmax = 0  (S/cm2) (changed according to DD1.hoc)
     
     conductance = 1.0E-5 (uS)
     n_instances = 1 
@@ -80,7 +81,7 @@ ASSIGNED {
     celsius (degC)
     temperature (K)
     ek (mV)
-    ik (mA/cm2)
+    
     
     
     n_timeCourse_t (ms)                    : derived variable
@@ -118,8 +119,8 @@ INITIAL {
     
     temperature = celsius + 273.15
     
-    rates()
-    rates() ? To ensure correct initialisation.
+    rates(v)
+    rates(v) ? To ensure correct initialisation.
     
     n_q = n_inf
     
@@ -147,12 +148,12 @@ BREAKPOINT {
 }
 
 DERIVATIVE states {
-    rates()
+    rates(v)
     n_q' = rate_n_q 
     
 }
 
-PROCEDURE rates() {
+PROCEDURE rates(v) {
     
     n_timeCourse_t = n_timeCourse_tau ? evaluable
     n_steadyState_x = n_steadyState_rate  / (1 + exp(0 - (v -  n_steadyState_midpoint )/ n_steadyState_scale )) ? evaluable

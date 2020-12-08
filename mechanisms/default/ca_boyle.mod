@@ -96,7 +96,7 @@ UNITS {
 
 PARAMETER {
     
-    gmax = 0  (S/cm2)                       : Will be changed when ion channel mechanism placed on cell!
+    gmax = 0.0019999999  (S/cm2)                       : Will be changed when ion channel mechanism placed on cell! :: Was: gmax = 0  (S/cm2) (changed according to DD1.hoc)
     
     conductance = 1.0E-5 (uS)
     e_instances = 2 
@@ -123,11 +123,11 @@ ASSIGNED {
     celsius (degC)
     temperature (K)
     eca (mV)
-    ica (mA/cm2)
+    :ica (mA/cm2) commented out because modcc was unhappy about it
     
-    cai (mM)
+    :cai (mM) commented out because modcc was unhappy about it
     
-    cao (mM)
+    :cao (mM) commented out because modcc was unhappy about it
     
     
     e_timeCourse_t (ms)                    : derived variable
@@ -191,8 +191,8 @@ INITIAL {
     
     temperature = celsius + 273.15
     
-    rates()
-    rates() ? To ensure correct initialisation.
+    rates(v, cai)
+    rates(v, cai) ? To ensure correct initialisation.
     
     e_q = e_inf
     
@@ -222,13 +222,13 @@ BREAKPOINT {
 }
 
 DERIVATIVE states {
-    rates()
+    rates(v, cai)
     e_q' = rate_e_q 
     f_q' = rate_f_q 
     
 }
 
-PROCEDURE rates() {
+PROCEDURE rates(v, cai) {
     LOCAL caConc
     
     caConc = cai

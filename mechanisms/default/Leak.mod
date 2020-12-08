@@ -11,7 +11,7 @@ ENDCOMMENT
 
 NEURON {
     SUFFIX Leak
-    NONSPECIFIC_CURRENT i
+    NONSPECIFIC_CURRENT i                   
     RANGE e
     
     RANGE gion                           
@@ -44,7 +44,7 @@ UNITS {
 
 PARAMETER {
     
-    gmax = 0  (S/cm2)                       : Will be changed when ion channel mechanism placed on cell!
+    gmax = 2.0E-5  (S/cm2)                       : Will be changed when ion channel mechanism placed on cell! :: Was: gmax = 0  (S/cm2) (changed according to DD1.hoc)
     
     conductance = 1.0E-5 (uS)
 }
@@ -56,7 +56,7 @@ ASSIGNED {
     celsius (degC)
     temperature (K)
     e (mV)
-    i (mA/cm2)
+    :i (mA/cm2)
     
     
     fopen                                  : derived variable
@@ -70,25 +70,27 @@ STATE {
 }
 
 INITIAL {
+    e = -50.0                               : new line added according to DD1.hoc
+    
     temperature = celsius + 273.15
     
-    rates()
-    rates() ? To ensure correct initialisation.
+    rates(v)
+    rates(v) ? To ensure correct initialisation.
     
 }
 
 BREAKPOINT {
     
-    rates()
+    rates(v)
     fopen = 1 ? evaluable
     g = conductance ? evaluable
     gion = gmax * fopen 
     
-    i = gion * (v - e)
+    i = gion * (v - e)                      
     
 }
 
-PROCEDURE rates() {
+PROCEDURE rates(v) {
     
     
      
