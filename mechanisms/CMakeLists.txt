@@ -90,7 +90,7 @@ foreach(mech ${allen_mechanisms})
 endforeach()
 
 # DEFAULT
-set(default_mechanisms exp2syn expsyn hh kamt kdrmt nax nernst pas)
+set(default_mechanisms exp2syn expsyn hh pas kamt kdrmt nax nernst k_slow k_fast ca_boyle Leak CaPoolTH)
 set(default_mod_srcdir "${CMAKE_CURRENT_SOURCE_DIR}/default")
 set(mech_dir "${CMAKE_CURRENT_BINARY_DIR}/generated/default")
 file(MAKE_DIRECTORY "${mech_dir}")
