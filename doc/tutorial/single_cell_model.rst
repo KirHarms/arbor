@@ -1,23 +1,24 @@
-.. _gs_single_cell:
+.. _tutorialsimplecell:
 
-A single cell model
-================================
+A simple single cell model
+==========================
 
 Building and testing detailed models of individual cells, then optimizing their
 parameters is usually the first step in building models with multi-compartment cells.
 Arbor supports a *single cell model* workflow for this purpose, which is a good way to
 introduce Arbor's cell modelling concepts and approach.
 
-This guide will walk through a series of single cell models of increasing complexity.
-Links are provided to separate documentation that covers relevant topics in more detail.
+.. Note::
 
-In an interactive Python interpreter, you can use ``help()`` on any class or function to
-obtain some documentation. (Try, for example, ``help(arbor.simulation``).
+   **Concepts covered in this example:**
 
-.. _single_soma:
+   1. Intro to building a morphology from a :class:`arbor.segment_tree`.
+   2. Intro to region and locset expressions.
+   3. Intro to decors and cell decorations.
+   4. Building a :class:`arbor.cable_cell` object.
+   5. Building a :class:`arbor.single_cell_model` object.
+   6. Running a simulation and visualising the results.
 
-Single segment cell with HH dynamics
-----------------------------------------------------
 
 The most trivial representation of a cell in Arbor is to model the entire cell as a
 single cylinder. The following example shows the steps required to construct a model of a
@@ -99,9 +100,8 @@ Single cell model
 
 Once the cell description has been built, the next step is to build and run the simulation.
 Arbor provides an interface for constructing single cell models with the
-:class:`arbor.single_cell_model<arbor.single_cell_model>`
-helper that creates a model from a cell description, with an interface for
-recording outputs and running the simulation.
+:class:`arbor.single_cell_model` helper that creates a model from a cell description, with
+an interface for recording outputs and running the simulation.
 
 .. code-block:: python
 
@@ -114,10 +114,10 @@ recording outputs and running the simulation.
     # (7) Run simulation for 30 ms of simulated activity.
     m.run(tfinal=30)
 
-Step **(5)** instantiates the :class:`arbor.single_cell_model<arbor.single_cell_model>`
+Step **(5)** instantiates the :class:`arbor.single_cell_model`
 with our single-compartment cell.
 
-Step **(6)** adds a :meth:`arbor.single_cell_model.probe()<arbor.single_cell_model.probe>`
+Step **(6)** adds a :meth:`arbor.single_cell_model.probe`
 used to record variables from the model. Three pieces of information are
 provided: the type of quantity we want probed (voltage), the location where we want to
 probe ('"center"'), and the frequency at which we want to sample (10kHz).
@@ -146,12 +146,12 @@ the spike detector and a voltage probes from our model have produced.
     df = pandas.DataFrame({'t/ms': m.traces[0].time, 'U/mV': m.traces[0].value})
     seaborn.relplot(data=df, kind="line", x="t/ms", y="U/mV",ci=None).savefig('single_cell_model_result.svg')
 
-Step **(8)** accesses :meth:`arbor.single_cell_model.spikes<arbor.single_cell_model.spikes>`
+Step **(8)** accesses :meth:`arbor.single_cell_model.spikes`
 to print the spike times. A single spike should be generated at around the same time the stimulus
 we provided in step (3) gets activated (10ms).
 
 Step **(9)** plots the measured potentials during the runtime of the simulation. The sampled quantities
-can be accessed through :meth:`arbor.single_cell_model.traces<arbor.single_cell_model.traces>`.
+can be accessed through :meth:`arbor.single_cell_model.traces`.
 We should be seeing something like this:
 
 .. figure:: single_cell_model_result.svg
